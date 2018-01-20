@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>content/images/button_default.png</file>
+        <file>content/images/button_pressed.png</file>
+        <file>content/images/delete.png</file>
+        <file>content/images/home.png</file>
+        <file>content/images/loading-gallery.gif</file>
+        <file>content/images/menu.png</file>
+        <file>content/images/navigation_next_item.png</file>
+        <file>content/images/tab_selected.png</file>
+        <file>content/images/tabs_standard.png</file>
+        <file>content/images/textinput.png</file>
+        <file>content/images/toolbar.png</file>
+        <file>content/fontawesome-webfont.ttf</file>
+        <file>content/functions.js</file>
+        <file>content/general.js</file>
+        <file>content/Keypad.qml</file>
+        <file>deployment.pri</file>
+        <file>main.cpp</file>
+        <file>qml.qrc</file>
+        <file>qtHue.pro</file>
+    </qresource>
+</RCC>
