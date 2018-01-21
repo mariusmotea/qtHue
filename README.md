@@ -11,4 +11,4 @@ No auto discovery is available in this moment, you will need to manually provide
     property string username: "a7161538be80d40b3de98dece6e91f904dc96170"
 
 
-from diyHue is very easy to retrive an username from config.json file (config -> whitelist)
+from [diyHue](https://github.com/mariusmotea/diyHue) is very easy to retrive an username from config.json file (config -> whitelist)
