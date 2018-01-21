@@ -13,12 +13,11 @@
         <file>content/images/textinput.png</file>
         <file>content/images/toolbar.png</file>
         <file>content/fontawesome-webfont.ttf</file>
-        <file>content/functions.js</file>
-        <file>content/general.js</file>
         <file>content/Keypad.qml</file>
         <file>deployment.pri</file>
         <file>main.cpp</file>
         <file>qml.qrc</file>
         <file>qtHue.pro</file>
+        <file>content/BridgeConnect.qml</file>
     </qresource>
 </RCC>
