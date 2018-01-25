@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.1
 Item {
     width: parent.width
     height: parent.height
-    objectName: "BridgeConnect"
+    objectName: "Wheather"
 
     property real progress: 0
     SequentialAnimation on progress {
@@ -22,28 +22,35 @@ Item {
             duration: 3000
         }
     }
+    TextField {
+        id: apikeyTextEntry
+        anchors.centerIn: parent
+        text: apikey
+        width: 600
+        style: touchStyle
+    }
 
-        TextField {
-            id: ipTextEntry
-            anchors.centerIn: parent
-            text: bridgeIp
-            style: touchStyle
+    TextField {
+        id: cityTextEntry
+        anchors.top: apikeyTextEntry.bottom
+        anchors.left: apikeyTextEntry.left
+        text: city
+        style: touchStyle
+    }
+    Button {
+        id: submit_button
+        anchors.left: cityTextEntry.left
+        anchors.top: cityTextEntry.bottom
+        anchors.topMargin: 10
+        text: "Save"
+        style: pressStyle
+        onClicked: {
+            apikey = apikeyTextEntry.text;
+            city = cityTextEntry.text;
+            saveWheatherDetails();
+            stackView.pop(1);
         }
-        Button {
-            id: submit_button
-            anchors.left: ipTextEntry.left
-            anchors.top: ipTextEntry.bottom
-            anchors.topMargin: 10
-            text: "Connect"
-            style: pressStyle
-            onClicked: {
-                bridgeIp = ipTextEntry.text
-                pyconn('POST', '', {
-                           devicetype: "qtHue#diyHue"
-                       }, bridgePair);
-                stackView.pop(1);
-            }
-        }
+    }
 
 
     Component {
