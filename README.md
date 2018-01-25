@@ -7,7 +7,7 @@ Working:
  - groups on/off
  - groups bri
  - groups scenes
- - show wheater
+ - show [wheater](https://openweathermap.org/api)
  
  ToDo:
    - contorl lights individually
