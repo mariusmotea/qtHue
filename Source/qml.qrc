@@ -22,5 +22,12 @@
         <file>content/images/bulb.png</file>
         <file>content/Options.qml</file>
         <file>content/Wheather.qml</file>
+        <file>content/Color.qml</file>
+        <file>content/Menu.qml</file>
+        <file>content/GroupStyle.qml</file>
+        <file>content/functions.js</file>
+        <file>content/LightsStyle.qml</file>
+        <file>content/GroupOptions.qml</file>
+        <file>content/LightsOptions.qml</file>
     </qresource>
 </RCC>

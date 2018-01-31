@@ -12,3 +12,5 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+RC_ICONS = appico.ico

@@ -1,6 +1,7 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import "functions.js" as Functions
 
 Item {
     width: parent.width
