@@ -197,15 +197,17 @@ Item {
 
                 var hue = Math.floor((Math.atan2(mouseY - centerY, mouseX - centerX)/ Math.PI * 180) + 180);
                 var sat = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+
                 //convert angle to Hue
                 if (hue < 90) hue += 270;
                 else hue -= 90;
                 hue = 360 - hue; //inverse rotation
                 var V = groupsModel.get(light_options.selected_id).bri / 255;
 
-                //console.warn("bri " + V);
                 var H = hue;
-                var S = sat / width;
+                var S = sat / (width / 2);
+
+                if (S > 1) S = 1;
 
                 var V2 = V * (1 - S);
                 var r  = ((H>=0 && H<=60) || (H>=300 && H<=360)) ? V : ((H>=120 && H<=240) ? V2 : ((H>=60 && H<=120) ? mix(V,V2,(H-60)/60) : ((H>=240 && H<=300) ? mix(V2,V,(H-240)/60) : 0)));
@@ -217,9 +219,7 @@ Item {
                 if (b < 0) b = 0;
                 if (g < 0) g = 0;
 
-                var xy = Functions.rgb_to_cie(r,g,b);
-
-                pyconn('PUT', '/groups/' + selected_id + '/action', {"xy": xy}, Functions.noCallback);
+                pyconn('PUT', '/groups/' + selected_id + '/action', {"xy": Functions.rgb_to_cie(r,g,b)}, Functions.noCallback);
 
             }
         }

@@ -173,5 +173,5 @@ function rgb_to_cie(red, green, blue)
         y = 0;
 
 
-    return [x, y];
+    return [parseFloat(x), parseFloat(y)];
 }

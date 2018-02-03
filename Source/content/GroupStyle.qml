@@ -77,9 +77,6 @@ Item {
                     ctx.fillStyle = gradient;
                     ctx.fill();
                     ctx.restore();
-
-                    //GradientStop { position: 1.0; color: config["groups"][groupId]["action"]["colormode"] === "xy"? cieToRGB(config["groups"][groupId]["action"]["xy"][0], config["groups"][groupId]["action"]["xy"][1], config["groups"][groupId]["action"]["bri"]) : colorTemperatureToRGB(config["groups"][groupId]["action"]["ct"]) }
-
                 }
             }
 

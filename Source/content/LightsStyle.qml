@@ -294,8 +294,8 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     var ct = 153 + ((width - mouseX) * 347 / width);
-                    pyconn('PUT', '/lights/' + lightId + '/state', {"ct": ct}, Functions.noCallback);
-                    bulb_color.color = Functions.colorTemperatureToRGB(ct);
+                    pyconn('PUT', '/lights/' + lightId + '/state', {"ct": parseInt(ct)}, Functions.noCallback);
+                    bulb_color.color = parseInt(Functions.colorTemperatureToRGB(ct));
 
                 }
             }
