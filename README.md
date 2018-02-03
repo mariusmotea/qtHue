@@ -7,6 +7,7 @@ Is idealy if you want to attach a touchscreen on wall to have controll of all li
 Working:
  - groups on/off, brightness, color temperature, colors(xy)
  - lights on/off, brightness, color temperature, colors(xy) 
+ - turn on/off all the lights
  - scenes
  - show [wheater](https://openweathermap.org/api)
  
