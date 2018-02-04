@@ -186,7 +186,14 @@ Item {
             width: parent.width - 10
             anchors.left: parent.left
             anchors.leftMargin: 5
-            height: background.state === "OPEN" ? 100 : 0
+            height: { if ("xy" in config["lights"][lightId]["state"]) {
+                    if (background.state === "OPEN")
+                        100
+                    else
+                        0
+                } else
+                    0
+            }
             anchors.top: parent.top
             anchors.topMargin: 100
             start: Qt.point(0, 0)
@@ -240,7 +247,7 @@ Item {
 
                     var H = mouseX * 360 / width;
                     var S = (height - mouseY) / height;
-                    var V = bri / 255;
+                    var V = 1;
                     var V2 = V * (1 - S);
                     var r  = ((H>=0 && H<=60) || (H>=300 && H<=360)) ? V : ((H>=120 && H<=240) ? V2 : ((H>=60 && H<=120) ? mix(V,V2,(H-60)/60) : ((H>=240 && H<=300) ? mix(V2,V,(H-240)/60) : 0)));
                     var g  = (H>=60 && H<=180) ? V : ((H>=240 && H<=360) ? V2 : ((H>=0 && H<=60) ? mix(V2,V,H/60) : ((H>=180 && H<=240) ? mix(V,V2,(H-180)/60) : 0)));
@@ -255,10 +262,7 @@ Item {
 
                     bulb_color.color = '#'+decColor.toString(16).substr(1);
 
-
-                    var xy = Functions.rgb_to_cie(r,g,b);
-
-                    pyconn('PUT', '/lights/' + lightId + '/state', {"xy": xy}, Functions.noCallback);
+                    pyconn('PUT', '/lights/' + lightId + '/state', {"xy": Functions.rgb_to_cie(r,g,b)}, Functions.noCallback);
                 }
             }
         }
@@ -269,7 +273,14 @@ Item {
             width: parent.width - 10
             anchors.left: parent.left
             anchors.leftMargin: 5
-            height: background.state === "OPEN" ? 50 : 0
+            height: { if ("ct" in config["lights"][lightId]["state"]) {
+                    if (background.state === "OPEN")
+                        50
+                    else
+                        0
+                } else
+                    0
+            }
             start: Qt.point(0, 0)
             end: Qt.point(parent.width, 0)
             gradient: Gradient {
