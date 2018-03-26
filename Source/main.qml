@@ -459,8 +459,8 @@ ApplicationWindow {
             page: "/content/BridgeConnect.qml"
         }
         ListElement {
-            name: "Wheater"
-            page: "/content/Wheather.qml"
+            name: "Weather"
+            page: "/content/Weather.qml"
         }
     }
 

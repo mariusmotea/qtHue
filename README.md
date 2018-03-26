@@ -9,7 +9,7 @@ Working:
  - lights on/off, brightness, color temperature, colors(xy) 
  - turn on/off all the lights
  - scenes
- - show [wheater](https://openweathermap.org/api)
+ - show [weather](https://openweathermap.org/api)
  
  ToDo:
    - provide precompiled binaries for ~RaspberryPi, Windows, Linux~ and MacOS.
