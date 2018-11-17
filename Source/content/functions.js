@@ -20,7 +20,7 @@ function updateLightsStatus(data) {
     any_on = false
     config["groups"] = data["groups"];
     config["lights"] = data["lights"];
-    if (data["groups"].length !== 0) {
+    if (data["groups"] && data["groups"].length !== 0) {
         groupsModel.clear()
         for (var group in data["groups"]) {
             if (data["groups"][group]["name"].substring(
@@ -39,7 +39,7 @@ function updateLightsStatus(data) {
             }
         }
     }
-    if (data["scenes"].length !== 0) {
+    if (data["scenes"] && data["scenes"].length !== 0) {
         for (var scene in data["scenes"]) {
             for (var i in data["groups"]) {
                 if (data["groups"][i]["lights"].indexOf(data["scenes"][scene]["lights"][0]) > -1) {
