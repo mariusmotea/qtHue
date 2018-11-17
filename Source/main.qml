@@ -74,6 +74,9 @@ ApplicationWindow {
         } else {
             bridgeConnected = false;
             console.warn("pair failed")
+            if ("error" in data[0]) {
+                console.warn(data[0]["error"]["description"])
+            }
             stackView.push(Qt.resolvedUrl("content/BridgeConnect.qml"))
         }
     }
