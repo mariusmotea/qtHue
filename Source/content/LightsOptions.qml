@@ -51,25 +51,6 @@ Item {
             highlightMoveDuration: 500
             focus: true
         }
-//        style: ScrollViewStyle {
-//            transientScrollBars: true
-//            handle: Item {
-//                implicitWidth: 14
-//                implicitHeight: 26
-//                Rectangle {
-//                    color: "#424246"
-//                    anchors.fill: parent
-//                    anchors.topMargin: 2
-//                    anchors.leftMargin: 4
-//                    anchors.rightMargin: 4
-//                    anchors.bottomMargin: 8
-//                }
-//            }
-//            scrollBarBackground: Item {
-//                implicitWidth: 14
-//                implicitHeight: 26
-//            }
-//        }
     }
 
     transitions: Transition {

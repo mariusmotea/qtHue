@@ -17,12 +17,7 @@ Item {
 
 //        cellWidth:  parent.width < 500*2 ? parent.width/2 : parent.width*(710/1360) > 500 ? 500 : parent.width*(710/1360)
 //        cellHeight: parent.height*(109/768) > 89 ? 89 : parent.height*(109/768) < 69 ? 69 : parent.height*(109/768)
-//        flow: GridView.FlowTopToBottom
-//        interactive: false
-//        cacheBuffer: 1024
-//        focus: true
         cellWidth: 460
-        //cellHeight: 90
         flow: GridView.FlowTopToBottom
         interactive: false
         cacheBuffer: 1024
