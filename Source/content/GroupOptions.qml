@@ -1,6 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
@@ -33,8 +32,8 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: color_temp.top
-
-        flickableItem.interactive: true
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        clip: true
 
         ListView {
             id: scenesListView
@@ -68,25 +67,6 @@ Item {
                 anchors.rightMargin: 5
                 radius: 4
                 color: "#254757"
-            }
-        }
-        style: ScrollViewStyle {
-            transientScrollBars: true
-            handle: Item {
-                implicitWidth: 14
-                implicitHeight: 26
-                Rectangle {
-                    color: "#424246"
-                    anchors.fill: parent
-                    anchors.topMargin: 2
-                    anchors.leftMargin: 4
-                    anchors.rightMargin: 4
-                    anchors.bottomMargin: 8
-                }
-            }
-            scrollBarBackground: Item {
-                implicitWidth: 14
-                implicitHeight: 26
             }
         }
     }
