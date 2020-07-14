@@ -19,28 +19,14 @@ Item {
         }
     }
 
-    anchors.top: modeListView.bottom
-    anchors.bottom: parent.bottom
-    width: 304
-    x: parent.width - 304
-    state: parent.state
-    states: [
-        State {
-            name: "CLOSE"
-            PropertyChanges { target: lightView; x: parent.width - 304}
-        },
-        State {
-            name: "OPEN"
-            PropertyChanges { target: lightView; x: parent.width}
-        }
-    ]
+    anchors.fill: parent
+
     ListModel {
         id: lightsModel
     }
 
-    ScrollView {
+    Flickable {
         anchors.fill: parent
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         clip: true
 
         ListView {

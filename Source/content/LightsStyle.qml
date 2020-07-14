@@ -7,18 +7,20 @@ import "functions.js" as Functions
 
 Item {
     id: lightStyle
-    width: 300
+    width: parent.width - 8
     height: background.height + 10
 
     Rectangle {
         id: background
         width: parent.width
-        height: text_nume.height + slider_bri.height + 7
+        height: text_nume.height + slider_bri.height + 10
         //color: "white"
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.topMargin: 5
         anchors.leftMargin: 5
+        radius: 5
+
         state: "CLOSED"
         states: [
             State {
@@ -37,7 +39,7 @@ Item {
                 easing.type: Easing.OutQuint
             }
         }
-        radius: 5
+
         gradient: Gradient {
             GradientStop {
                 position: 0.0
@@ -108,7 +110,7 @@ Item {
             anchors.rightMargin: 10
             anchors.top: parent.top
             anchors.topMargin: 10
-            font.pointSize: 32
+            font.pointSize: 30
             font.family: "FontAwesome"
             color: state === "ON" ? "#468bb7" : "#cccccc"
             text: "\uf011"
@@ -133,10 +135,12 @@ Item {
         }
         Slider {
             id: slider_bri
-            anchors.topMargin: 4 + text_nume.height
+            anchors.topMargin: 10 + text_nume.height
             anchors.top: parent.top
             anchors.left: bulb.right
             anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 10
             handle: Rectangle {
                 x: slider_bri.leftPadding + slider_bri.visualPosition * (slider_bri.availableWidth - width)
                 y: slider_bri.topPadding + slider_bri.availableHeight / 2 - height / 2
@@ -171,8 +175,8 @@ Item {
             onValueChanged: {
                 if (value !== bri) {
                     pyconn('PUT', '/lights/' + lightId + '/state', {
-                                         "bri": parseInt(value, 10)
-                                     }, Functions.noCallback)
+                               "bri": parseInt(value, 10)
+                           }, Functions.noCallback)
                 }
             }
         }
@@ -197,31 +201,31 @@ Item {
                 GradientStop {
                     position: 0.000
                     color: Qt.rgba(1, 0, 0, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 0.167
                     color: Qt.rgba(1, 1, 0, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 0.333
                     color: Qt.rgba(0, 1, 0, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 0.500
                     color: Qt.rgba(0, 1, 1, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 0.667
                     color: Qt.rgba(0, 0, 1, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 0.833
                     color: Qt.rgba(1, 0, 1, 1)
-                 }
-                 GradientStop {
+                }
+                GradientStop {
                     position: 1.000
                     color: Qt.rgba(1, 0, 0, 1)
-                 }
+                }
             }
             LinearGradient {
                 anchors.fill: parent
@@ -313,13 +317,11 @@ Item {
             width: parent.width - 60
             height: 50
             onClicked: {
-                if (background.state === "OPEN") {
-                    background.state = "CLOSED";
-                } else {
-                    background.state = "OPEN"
-                }
+                if (background.state === "OPEN") background.state = "CLOSED"
+                else background.state = "OPEN"
             }
         }
     }
 }
+
 
