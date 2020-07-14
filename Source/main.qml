@@ -1,6 +1,5 @@
 import QtQuick 2.4
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import QtQuick.LocalStorage 2.0
 import "./content"
 import "content/functions.js" as Functions
@@ -18,7 +17,7 @@ ApplicationWindow {
 
     property string bridgeIp: "127.0.0.1"
     property string username: ""
-    property string locale: "en_RO"
+    property string local: "en_RO"
     property string city: "city"
     property string apikey: "apikey"  //free registration on openweathermap.org
 
@@ -117,7 +116,7 @@ ApplicationWindow {
 
 
 
-    toolBar: BorderImage {
+    header: BorderImage {
 
         border.bottom: 8
         source: "content/images/toolbar.png"
@@ -273,13 +272,13 @@ ApplicationWindow {
 
             onTriggered: {
                 var date = new Date()
-                clock_txt.text = date.toLocaleTimeString(Qt.locale(locale),
+                clock_txt.text = date.toLocaleTimeString(Qt.locale(local),
                                                          "hh:mm")
-                date_txt.text = date.toLocaleDateString(Qt.locale(locale),
+                date_txt.text = date.toLocaleDateString(Qt.locale(local),
                                                         "MMM yyyy")
-                zi_txt.text = date.toLocaleDateString(Qt.locale(locale), "dddd")
-                nr_zi.text = date.toLocaleDateString(Qt.locale(locale), "d")
-                if (date.toLocaleTimeString(Qt.locale(locale),
+                zi_txt.text = date.toLocaleDateString(Qt.locale(local), "dddd")
+                nr_zi.text = date.toLocaleDateString(Qt.locale(local), "d")
+                if (date.toLocaleTimeString(Qt.locale(local),
                                             "s").slice(-1) === "0") {
                     pyconn('GET', '', {
 
@@ -330,117 +329,12 @@ ApplicationWindow {
         id: scenesModel
     }
 
-
-    Component {
-        id: switchStyle
-        SwitchStyle {
-
-            groove: Rectangle {
-                implicitHeight: 55
-                implicitWidth: 120
-                radius: 5
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.bottom: parent.bottom
-                    radius: 3
-                    width: parent.width / 2 - 2
-                    height: 20
-                    anchors.margins: 2
-                    color: control.checked ? "#468bb7" : "#222"
-                    Behavior on color {
-                        ColorAnimation {
-                        }
-                    }
-                    Text {
-                        font.pixelSize: 18
-                        color: "white"
-                        anchors.centerIn: parent
-                        text: "ON"
-                    }
-                }
-                Item {
-                    width: parent.width / 2
-                    height: parent.height
-                    anchors.right: parent.right
-                    Text {
-                        font.pixelSize: 18
-                        color: "white"
-                        anchors.centerIn: parent
-                        text: "OFF"
-                    }
-                }
-                color: "#222"
-                border.color: "#444"
-                border.width: 2
-            }
-            handle: Rectangle {
-                width: parent.parent.width / 2
-                height: control.height
-                radius: 5
-                color: "#444"
-                border.color: "#555"
-                border.width: 2
-            }
-        }
-    }
-
-    Component {
-        id: touchStyle
-        SliderStyle {
-            handle: Rectangle {
-                width: 30
-                height: 30
-                radius: height
-                antialiasing: true
-                color: Qt.lighter("#468bb7", 1.2)
-            }
-
-            groove: Item {
-                implicitHeight: 50
-                implicitWidth: 240
-                Rectangle {
-                    height: 8
-                    width: parent.width
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: "#444"
-                    opacity: 0.8
-                    Rectangle {
-                        antialiasing: true
-                        radius: 1
-                        color: "#468bb7"
-                        height: parent.height
-                        width: parent.width * control.value / control.maximumValue
-                    }
-                }
-            }
-        }
-    }
-
-
     //////
     StackView {
         id: stackView
         anchors.fill: parent
         focus: true
-        initialItem: GridView {
-            id: gridViewProduse
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            width: parent.width
-            model: groupsModel
-            delegate: GroupStyle {
-
-            }
-
-            cellWidth: 460
-            //cellHeight: 90
-            flow: GridView.FlowTopToBottom
-            interactive: false
-            cacheBuffer: 1024
-            focus: true
-        }
-
+        initialItem: Home{}
 
         transitions: Transition {
             NumberAnimation {
@@ -455,7 +349,7 @@ ApplicationWindow {
         id: menuModel
         ListElement {
             name: "Home"
-            page: "main.qml"
+            page: "/content/Home.qml"
         }
         ListElement {
             name: "Bridge"

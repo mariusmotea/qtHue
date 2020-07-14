@@ -1,8 +1,5 @@
 import QtQuick 2.4
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-
-
+import QtQuick.Controls 2.4
 
 Rectangle {
     id: menu_context
@@ -26,8 +23,8 @@ Rectangle {
 
     ScrollView {
         anchors.fill: parent
-
-        flickableItem.interactive: true
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        clip: true
 
         ListView {
             id: menuListView
@@ -64,11 +61,7 @@ Rectangle {
                 MouseArea{
                     anchors.fill: parent
                     onClicked:{
-                        if (name === "Home") {
-                            stackView.pop(1)
-                        } else {
-                            stackView.push(Qt.resolvedUrl(page));
-                        }
+                        stackView.replace(Qt.resolvedUrl(page))
                         menuListView.currentIndex = index;
                         menu_context.state = 'CLOSE'
                     }
@@ -83,25 +76,6 @@ Rectangle {
                 anchors.rightMargin: 5
                 radius: 4
                 color: "#254757"
-            }
-        }
-        style: ScrollViewStyle {
-            transientScrollBars: true
-            handle: Item {
-                implicitWidth: 14
-                implicitHeight: 26
-                Rectangle {
-                    color: "#424246"
-                    anchors.fill: parent
-                    anchors.topMargin: 2
-                    anchors.leftMargin: 4
-                    anchors.rightMargin: 4
-                    anchors.bottomMargin: 8
-                }
-            }
-            scrollBarBackground: Item {
-                implicitWidth: 14
-                implicitHeight: 26
             }
         }
     }

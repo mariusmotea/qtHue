@@ -1,6 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
@@ -125,30 +124,60 @@ Item {
 
         Switch {
             id: switch_state
-            style: switchStyle
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 12
             anchors.top: parent.top
             anchors.topMargin: 12
             anchors.right: parent.right
             anchors.rightMargin: 15
             checked: on
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    on = switch_state.checked
-                    if (switch_state.checked === true) {
-                        on = false
-                    } else {
-                        on = true
-                    }
-                    for (var i = 0; i < config["groups"][groupId]["lights"].length; i++) {
-                        config["lights"][config["groups"][groupId]["lights"][i]]["state"]["on"] = on
-                        bulb_light.requestPaint();
-                    }
-
-                    pyconn('PUT', '/groups/' + groupId + '/action', {
-                                         on: switch_state.checked
-                                     }, Functions.noCallback)
+            indicator: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 55
+                x: switch_state.leftPadding
+                y: parent.height / 2 - height / 2
+                radius: 5
+                color: switch_state.checked ? "#468bb7" : "#222"
+                border.color: switch_state.checked ? "#468bb7" : "#cccccc"
+                Text {
+                    font.pixelSize: 18
+                    color: "white"
+                    width: parent.width / 2
+                    height: parent.height
+                    anchors.left: parent.left
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "ON"
                 }
+                Text {
+                    font.pixelSize: 18
+                    color: "white"
+                    width: parent.width / 2
+                    height: parent.height
+                    anchors.right: parent.right
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "OFF"
+                }
+                Rectangle {
+                    x: switch_state.checked ? parent.width - width : 0
+                    width: 50
+                    height: 55
+                    radius: 5
+                    color: switch_state.down ? "#cccccc" : "#ffffff"
+                    border.color: switch_state.checked ? (switch_state.down ? "#468bb7" : "#248DB7") : "#999999"
+                }
+            }
+
+            onClicked: {
+                for (var i = 0; i < config["groups"][groupId]["lights"].length; i++) {
+                    config["lights"][config["groups"][groupId]["lights"][i]]["state"]["on"] = on
+                    bulb_light.requestPaint();
+                }
+
+                pyconn('PUT', '/groups/' + groupId + '/action', {
+                           on: switch_state.checked
+                       }, Functions.noCallback)
             }
         }
         Slider {
@@ -157,41 +186,38 @@ Item {
             anchors.left: bulb.right
             anchors.leftMargin: 10
             anchors.bottomMargin: -3
-            style: SliderStyle {
-                handle: Rectangle {
-                    width: 30
-                    height: 30
-                    radius: height
-                    antialiasing: true
-                    color: Qt.lighter(
-                               switch_state.checked ? "#468bb7" : "#444",
-                                                      1.2)
-                }
+            handle: Rectangle {
+                x: slider_bri.leftPadding + slider_bri.visualPosition * (slider_bri.availableWidth - width)
+                y: slider_bri.topPadding + slider_bri.availableHeight / 2 - height / 2
+                implicitWidth: 30
+                implicitHeight: 30
+                radius: height
+                color: Qt.lighter(switch_state.checked ? "#468bb7" : "#444", 1.2)
+                border.color: "#bdbebf"
+                antialiasing: true
+            }
+            background: Rectangle {
+                x: slider_bri.leftPadding
+                y: slider_bri.topPadding + slider_bri.availableHeight / 2 - height / 2
+                implicitHeight: 5
+                implicitWidth: 240
+                width: slider_bri.availableWidth
+                height: implicitHeight
+                radius: 2
+                color: "#444"
 
-                groove: Item {
-                    implicitHeight: 50
-                    implicitWidth: 240
-                    Rectangle {
-                        height: 8
-                        width: parent.width
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: "#444"
-                        opacity: 0.8
-                        Rectangle {
-                            antialiasing: true
-                            radius: 1
-                            color: switch_state.checked ? "#468bb7" : "#444"
-                            height: parent.height
-                            width: parent.width * control.value / control.maximumValue
-                        }
-                    }
+                Rectangle {
+                    width: slider_bri.visualPosition * parent.width
+                    height: parent.height
+                    color: switch_state.checked ? "#468bb7" : "#444"
+                    radius: 2
                 }
             }
             value: bri
-            maximumValue: 255
-            minimumValue: 1
+            from: 1
+            to: 255
             enabled: switch_state.checked
-            updateValueWhileDragging: false
+//            updateValueWhileDragging: false
             onValueChanged: {
                 if (value !== bri) {
                     pyconn('PUT', '/groups/' + groupId + '/action', {

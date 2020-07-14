@@ -1,6 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.4
+import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
@@ -14,7 +13,7 @@ Item {
     Rectangle {
         id: background
         width: parent.width
-        height: 90 + xy_selection.height + color_temp.height
+        height: text_nume.height + slider_bri.height + 7
         //color: "white"
         anchors.top: parent.top
         anchors.left: parent.left
@@ -24,11 +23,11 @@ Item {
         states: [
             State {
                 name: "OPEN"
-                PropertyChanges { target: background; height: 100 + xy_selection.height + color_temp.height0}
+                PropertyChanges { target: background; height: text_nume.height + slider_bri.height + xy_selection.height + color_temp.height + 25}
             },
             State {
                 name: "CLOSE"
-                PropertyChanges { target: background; height: 100}
+                PropertyChanges { target: background; height: text_nume.height + slider_bri.height + 7}
             }
         ]
         transitions: Transition {
@@ -91,13 +90,13 @@ Item {
         Text {
             id: text_nume
             text: name
-            width: 200
             anchors.top: parent.top
             anchors.left: bulb.right
+            anchors.right: power_switch.left
             anchors.leftMargin: 10
             anchors.topMargin: 5
             color: "#254757"
-            font.pixelSize: 24
+            font.pixelSize: 22
             font.family: "Tahoma"
             renderType: Text.NativeRendering
             wrapMode: Text.Wrap
@@ -134,45 +133,41 @@ Item {
         }
         Slider {
             id: slider_bri
+            anchors.topMargin: 4 + text_nume.height
             anchors.top: parent.top
             anchors.left: bulb.right
             anchors.leftMargin: 10
-            anchors.topMargin: 45
-            style: SliderStyle {
-                handle: Rectangle {
-                    width: 30
-                    height: 30
-                    radius: height
-                    antialiasing: true
-                    color: Qt.lighter(
-                               power_switch.state === "ON" ? "#468bb7" : "#444",
-                                                      1.2)
-                }
+            handle: Rectangle {
+                x: slider_bri.leftPadding + slider_bri.visualPosition * (slider_bri.availableWidth - width)
+                y: slider_bri.topPadding + slider_bri.availableHeight / 2 - height / 2
+                implicitWidth: 30
+                implicitHeight: 30
+                radius: height
+                color: Qt.lighter(power_switch.checked ? "#468bb7" : "#444", 1.2)
+                border.color: "#bdbebf"
+                antialiasing: true
+            }
+            background: Rectangle {
+                x: slider_bri.leftPadding
+                y: slider_bri.topPadding + slider_bri.availableHeight / 2 - height / 2
+                implicitHeight: 5
+                implicitWidth: 200
+                width: slider_bri.availableWidth
+                height: implicitHeight
+                radius: 2
+                color: "#444"
 
-                groove: Item {
-                    implicitHeight: 50
-                    implicitWidth: 200
-                    Rectangle {
-                        height: 8
-                        width: parent.width
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: "#444"
-                        opacity: 0.8
-                        Rectangle {
-                            antialiasing: true
-                            radius: 1
-                            color: power_switch.state === "ON" ? "#468bb7" : "#444"
-                            height: parent.height
-                            width: parent.width * control.value / control.maximumValue
-                        }
-                    }
+                Rectangle {
+                    width: slider_bri.visualPosition * parent.width
+                    height: parent.height
+                    color: power_switch.checked ? "#468bb7" : "#444"
+                    radius: 2
                 }
             }
             value: bri
-            maximumValue: 255
-            minimumValue: 1
+            to: 255
+            from: 1
             enabled: power_switch.state === "ON"? true : false
-            updateValueWhileDragging: false
             onValueChanged: {
                 if (value !== bri) {
                     pyconn('PUT', '/lights/' + lightId + '/state', {
@@ -184,7 +179,9 @@ Item {
         LinearGradient {
             id: xy_selection
             width: parent.width - 10
+            anchors.top: slider_bri.bottom
             anchors.left: parent.left
+            anchors.topMargin: 10
             anchors.leftMargin: 5
             height: { if ("xy" in config["lights"][lightId]["state"]) {
                     if (background.state === "OPEN")
@@ -194,8 +191,6 @@ Item {
                 } else
                     0
             }
-            anchors.top: parent.top
-            anchors.topMargin: 100
             start: Qt.point(0, 0)
             end: Qt.point(parent.width, 0)
             gradient: Gradient {
@@ -268,11 +263,12 @@ Item {
         }
         LinearGradient {
             id: color_temp
-            anchors.bottom: parent.bottom
+            anchors.top: xy_selection.bottom
+            anchors.topMargin: -3
             anchors.bottomMargin: 5
-            width: parent.width - 10
             anchors.left: parent.left
             anchors.leftMargin: 5
+            width: parent.width - 10
             height: { if ("ct" in config["lights"][lightId]["state"]) {
                     if (background.state === "OPEN")
                         50

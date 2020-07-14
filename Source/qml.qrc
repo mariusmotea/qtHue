@@ -29,5 +29,6 @@
         <file>content/LightsStyle.qml</file>
         <file>content/GroupOptions.qml</file>
         <file>content/LightsOptions.qml</file>
+        <file>content/Home.qml</file>
     </qresource>
 </RCC>
