@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
@@ -7,12 +7,12 @@ import "functions.js" as Functions
 
 Item {
     id: groupsDelegate
-    width: parent.width
-    height: parent.height
+    width: gridViewProduse.cellWidth
+    height: gridViewProduse.cellHeight
 
     Rectangle {
         width: 450
-        height: 80
+        height: 85
         //color: "white"
         anchors.top: parent.top
         anchors.left: parent.left
@@ -95,7 +95,7 @@ Item {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    color.state = "OPEN"
+                    color.open();
                     scenesModel.clear();
                     for (var key in config["scenes"][groupId]) {
                         scenesModel.append({

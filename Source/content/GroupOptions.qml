@@ -1,38 +1,17 @@
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
 Item {
     id: groupView
-    anchors.top: modeListView.bottom
-    anchors.bottom: parent.bottom
-    width: 304
-    x: parent.width - 304
-    state: parent.state
-    states: [
-        State {
-            name: "OPEN"
-            PropertyChanges { target: groupView; x: parent.width - 304}
-        },
-        State {
-            name: "CLOSE"
-            PropertyChanges { target: groupView; x: parent.width}
-        }
-    ]
-    transitions: Transition {
-        NumberAnimation {
-            properties: "x"
-            duration: 160
-            easing.type: Easing.OutQuint
-        }
-    }
-    ScrollView {
+    anchors.fill: parent
+
+    Flickable {
         anchors.top: groupView.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: color_temp.top
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         clip: true
 
         ListView {
@@ -46,7 +25,7 @@ Item {
                 font.pixelSize: 32
                 text: name
                 anchors.left: parent.left
-                anchors.leftMargin: 30
+                anchors.leftMargin: 20
 
                 MouseArea{
                     anchors.fill: parent
@@ -70,17 +49,18 @@ Item {
             }
         }
     }
-    Item {
+    Slider {
         id: color_temp
-        width: 300
-        height: "ct" in config["groups"][selected_id]["action"] ? 50 : 0
-        anchors.right: parent.right
-        anchors.bottom: color_picker.top
-        anchors.bottomMargin: 4
-        LinearGradient {
+        height: "ct" in config["groups"][selected_id]["action"] ? color_picker.height : 0
+        anchors.left: parent.left
+        anchors.right: color_linie.left
+        anchors.bottom: parent.bottom
+        orientation: Qt.Vertical
+        handle: Item{}
+        background: LinearGradient {
             anchors.fill: parent
             start: Qt.point(0, 0)
-            end: Qt.point(300, 0)
+            end: Qt.point(0, parent.height)
             gradient: Gradient {
                 GradientStop {
                     position: 0
@@ -92,35 +72,26 @@ Item {
                 }
             }
         }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                var ct = Math.floor(153 + ((300 - mouseX) * 1.15));
-                pyconn('PUT', '/groups/' + selected_id + '/action', {"ct": ct}, Functions.noCallback);
-                for (var light=0; light < config["groups"][selected_id]["lights"].length; light++) {
-                    if ("ct" in config["lights"][config["groups"][selected_id]["lights"][light]]["state"]) {
-                        config["lights"][config["groups"][selected_id]["lights"][light]]["state"]["ct"] = ct;
-                    }
+        from: 150
+        to: 500
+        live: false
+        onMoved: {
+            var ct = Math.floor(color_temp.value)
+            console.warn(ct);
+            pyconn('PUT', '/groups/' + selected_id + '/action', {"ct": ct}, Functions.noCallback);
+            for (var light=0; light < config["groups"][selected_id]["lights"].length; light++) {
+                if ("ct" in config["lights"][config["groups"][selected_id]["lights"][light]]["state"]) {
+                    config["lights"][config["groups"][selected_id]["lights"][light]]["state"]["ct"] = ct;
                 }
-                groupsModel.set(light_options.selected_id,{"ct":ct});
             }
+            groupsModel.set(light_options.selected_id,{"ct":ct});
         }
-    }
-
-    Rectangle {
-        anchors.bottom: color_picker.top
-        anchors.left: parent.left
-        height: 4
-        width: parent.width
-        color: "#33bef2"
-        border.color: "#3b7891"
-        border.width: 1
     }
 
     Item {
         id: color_picker
-        width: 300
-        height: "xy" in config["groups"][selected_id]["action"] ? 300 : 0
+        width: parent.width*0.85
+        height: "xy" in config["groups"][selected_id]["action"] ? parent.width*0.85 : 0
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         ConicalGradient {
@@ -204,4 +175,32 @@ Item {
             }
         }
     }
+    Rectangle {
+        id: color_linie_top
+        anchors.bottom: color_picker.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        color: "#33B5E5"
+        border.color: "#237B9C"
+        border.width: 1
+        height: "xy" in config["groups"][selected_id]["action"] && "ct" in config["groups"][selected_id]["action"] ? 3 : 0
+    }
+
+    Rectangle {
+        id: color_linie
+        anchors.bottom: parent.bottom
+        anchors.right: color_picker.left
+        anchors.rightMargin: -1
+        width: 3
+        height: color_picker.height
+        color: "#33B5E5"
+        border.color: "#237B9C"
+        border.width: 1
+    }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

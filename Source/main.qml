@@ -5,6 +5,7 @@ import "./content"
 import "content/functions.js" as Functions
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
     title: qsTr("qtHue")
     width: 1360
@@ -151,11 +152,8 @@ ApplicationWindow {
                     anchors.fill: parent
                     anchors.margins: -10
                     onClicked: {
-                        if (menu_context.state === "OPEN") {
-                            menu_context.state = "CLOSE";
-                        } else {
-                            menu_context.state = "OPEN";
-                        }
+                        if (menu_context.visible === true) menu_context.close();
+                        else menu_context.open();
                     }
                 }
             }
