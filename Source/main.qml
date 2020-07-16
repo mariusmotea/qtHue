@@ -24,7 +24,7 @@ ApplicationWindow {
     property color colorCode: "#33b5e5"
     property string bridgeIp: ""
     property string username: ""
-    property string local: locale.name
+    property string local: "en_RO"//locale.name
     property string city: ""
     property string apikey: ""  //free registration on openweathermap.org
 
@@ -227,19 +227,20 @@ ApplicationWindow {
                 anchors.left: menu_buttons.right
                 anchors.right: clock_display.left
                 flickableDirection: Flickable.HorizontalFlick
-                contentWidth: wheather_icon.width + temperature.width + 10
+                contentWidth: stackView.currentItem.objectName === "Weather" ? this.width : weather_icon.width + temperature.width + 10
                 clip: true
                 rotation: 180
 
                 Item {
                     rotation: 180
                     anchors.fill: parent
+                    width: parent.width
 
                     Image {
-                        id: wheather_icon
+                        id: weather_icon
                         fillMode: Image.PreserveAspectFit
                         anchors.rightMargin: 8
-                        anchors.right: parent.right
+                        anchors.left: temperature.right
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
                         source: stackView.currentItem.objectName === "Weather" ? "" : weatherResponse != "" ? 'http://openweathermap.org/img/wn/' + weatherResponse["weather"][0]["icon"] + '@2x.png' : ""
@@ -252,9 +253,9 @@ ApplicationWindow {
                             pixelSize: 36
                         }
                         color: "white"
-                        anchors.right: wheather_icon.left
-                        anchors.rightMargin: 8
-//                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.left: parent.left
+                        anchors.rightMargin: 8 + weather_icon.width
                         anchors.top: parent.top
                         anchors.topMargin: 7
                         horizontalAlignment: stackView.currentItem.objectName === "Weather" ? Text.AlignHCenter : Text.AlignRight
