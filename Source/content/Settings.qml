@@ -28,7 +28,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 5
-        height: 40
+        height: 40 + 40*parent.height*0.0008
         spacing: 5
         SettingsStyle{
             id: temp
@@ -117,7 +117,7 @@ Item {
             text: bridgeIp
             color: "white"
             verticalAlignment: Text.AlignBottom
-            font.pixelSize: 28*parent.height*0.0045
+            font.pixelSize: 28*parent.height*0.0035
             placeholderText: "Bridge IP (e.g. 127.0.0.1)"
             background:
                 BorderImage {
@@ -147,7 +147,7 @@ Item {
             selectByMouse: true
             text: apikey
             color: "white"
-            font.pixelSize: 28*parent.height*0.004
+            font.pixelSize: 28*parent.height*0.0035
             placeholderText: "apikey"
             verticalAlignment: Text.AlignBottom
             background: BorderImage {
@@ -175,7 +175,7 @@ Item {
             selectByMouse: true
             text: city
             color: "white"
-            font.pixelSize: 28*parent.height*0.0045
+            font.pixelSize: 28*parent.height*0.0035
             placeholderText: "city name or id"
             verticalAlignment: Text.AlignBottom
             background: BorderImage {

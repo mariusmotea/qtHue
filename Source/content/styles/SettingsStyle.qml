@@ -7,6 +7,7 @@ ComboBox{
     id: combobox
     width: parent.width
     height: parent.height
+    font.pixelSize: 12*parent.height*0.03
 
     delegate: ItemDelegate {
         width: combobox.width
@@ -28,9 +29,9 @@ ComboBox{
     indicator: Text{
         x: combobox.width - width - combobox.rightPadding
         y: combobox.topPadding + (combobox.availableHeight - height) / 3
-        width: 12
-        height: 8
-        font.pixelSize: 20
+        width: 12*parent.height*0.028
+        height: 8*parent.height*0.04
+        font.pixelSize: 20*parent.height*0.03
         font.family: "FontAwesome"
         text: "\uf103"
         color: combobox.pressed ? Qt.darker(comboColor, 2) : comboColor
@@ -38,7 +39,6 @@ ComboBox{
     contentItem: Text {
         leftPadding: 12
         rightPadding: combobox.indicator.width + combobox.spacing
-
         text: model.get(currentIndex).text
         font: combobox.font
         color: combobox.pressed ? Qt.darker(comboColor, 2) : comboColor
