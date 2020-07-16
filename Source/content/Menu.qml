@@ -1,6 +1,5 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.0
+import QtQuick 2.8
+import QtQuick.Controls 2.8
 import "functions.js" as Functions
 
 Drawer {
@@ -18,19 +17,17 @@ Drawer {
             anchors.top: parent.top
             anchors.topMargin: 1
             anchors.right: parent.right
-            width: 3
+            width: 4
             height: menu_context.height
-            color: "#33B5E5"
-            border.color: "#237B9C"
+            color: colorCode
+            border.color: Qt.darker(colorCode,1.4)
             border.width: 1
-
         }
     }
     contentChildren: [
-        ScrollView {
+        Flickable {
             id: menu_scrollview
             anchors.fill: parent
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             clip: true
 
             ListView {
@@ -38,14 +35,14 @@ Drawer {
                 anchors.fill: parent
                 model: menuModel
 
-                delegate: ColumnLayout{
+                delegate: Column{
                     id: menu_grid
                     width: parent.width
                     height: root.height
                     Item{
                         id: root
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 55
+                        implicitWidth: parent.width
+                        implicitHeight: 60
                         Text {
                             id: menu_name
                             height: text.height
@@ -94,7 +91,8 @@ Drawer {
                     anchors.right: parent.right
                     anchors.margins: 5
                     radius: 20
-                    color: "#254757"
+                    color: Qt.hsva(colorCode.hsvHue + 0.005, colorCode.hsvSaturation - 0.25, colorCode.hsvValue - 0.55, 1)
+                    opacity: 0.8
                 }
             }
         },

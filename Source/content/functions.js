@@ -1,20 +1,32 @@
 function getWeather() {
-    if (apikey.length > 10) {
+    if (apikey != "") {
         var xhr = new XMLHttpRequest
-        xhr.open('GET', 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&APPID=' + apikey, true);
+        var xhr2 = new XMLHttpRequest
+        var unit, cityRequest
+
+        if(tempUnit == "°C") unit = "metric"
+        else if(tempUnit == "°F") unit = "imperial"
+        if(city.replace(/^[0-9]+$/, '') == "")  cityRequest = "id=" + city
+        else cityRequest = "q=" + city
+
+        xhr.open('GET', 'http://api.openweathermap.org/data/2.5/weather?' + cityRequest + '&units=' + unit + '&APPID=' + apikey + '&lang=' + local.replace(/[\_].*$/, ''), true);
         xhr.setRequestHeader("Content-type", "application/json")
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
+            if (xhr.readyState === 4 && xhr.status === 200) { 
                 var response = JSON.parse(xhr.responseText);
-                temperature.text = city + ' ' + parseInt(response["list"][0]["main"]["temp"], 10) + '°C';
-                wheather_icon.source = 'http://openweathermap.org/img/w/' + response["list"][1]["weather"][0]["icon"] + '.png';
+                weatherResponse = response;
+
+                xhr2.open('GET', 'http://api.openweathermap.org/data/2.5/onecall?lat=' + response["coord"]["lat"] + '&lon=' + response["coord"]["lon"] + '&units=' + unit + '&APPID=' + apikey + '&lang=' + local.replace(/[\_].*$/, ''), true);
+                xhr2.setRequestHeader("Content-type", "application/json")
+                xhr2.onreadystatechange = function () {
+                    if (xhr2.readyState === 4 && xhr2.status === 200) weatherResponseOnecall = JSON.parse(xhr2.responseText);
+                }
+                xhr2.send()
             }
         }
         xhr.send()
     }
 }
-
-
 
 function updateLightsStatus(data) {
     any_on = false
@@ -23,8 +35,7 @@ function updateLightsStatus(data) {
     if (data["groups"] && data["groups"].length !== 0) {
         groupsModel.clear()
         for (var group in data["groups"]) {
-            if (data["groups"][group]["name"].substring(
-                        0, 18) !== "Entertainment area") {
+            if (data["groups"][group]["name"].substring(0, 18) !== "Entertainment area") {
                 groupsModel.append({
                                        groupId: group,
                                        name: data["groups"][group]["name"],
@@ -34,8 +45,7 @@ function updateLightsStatus(data) {
                                        ct: data["groups"][group]["action"]["ct"],
                                        xy: data["groups"][group]["action"]["xy"]
                                    })
-                if (data["groups"][group]["state"]["any_on"])
-                    any_on = true
+                if (data["groups"][group]["state"]["any_on"]) any_on = true;
             }
         }
     }
@@ -43,9 +53,7 @@ function updateLightsStatus(data) {
         for (var scene in data["scenes"]) {
             for (var i in data["groups"]) {
                 if (data["groups"][i]["lights"].indexOf(data["scenes"][scene]["lights"][0]) > -1) {
-                    if (config["scenes"][i] == null) {
-                        config["scenes"][i] = {}
-                    }
+                    if (config["scenes"][i] == null) config["scenes"][i] = {}; //@disable-check M126
                     config["scenes"][i][scene] = data["scenes"][scene]["name"];
                 }
             }
@@ -153,9 +161,9 @@ function colorTemperatureToRGB(mireds){
 function rgb_to_cie(red, green, blue)
 {
     //Apply a gamma correction to the RGB values, which makes the color more vivid and more the like the color displayed on the screen of your device
-    var red 	= (red > 0.04045) ? Math.pow((red + 0.055) / (1.0 + 0.055), 2.4) : (red / 12.92);
-    var green 	= (green > 0.04045) ? Math.pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92);
-    var blue 	= (blue > 0.04045) ? Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4) : (blue / 12.92);
+    var red 	= (red > 0.04045) ? Math.pow((red + 0.055) / (1.0 + 0.055), 2.4) : (red / 12.92); //@disable-check M103
+    var green 	= (green > 0.04045) ? Math.pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92); //@disable-check M103
+    var blue 	= (blue > 0.04045) ? Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4) : (blue / 12.92); //@disable-check M103
 
     //RGB values to XYZ using the Wide RGB D65 conversion formula
     var X 		= red * 0.664511 + green * 0.154324 + blue * 0.162028;
