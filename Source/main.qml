@@ -24,7 +24,7 @@ ApplicationWindow {
     property color colorCode: "#33b5e5"
     property string bridgeIp: ""
     property string username: ""
-    property string local: "en_RO"//locale.name
+    property string local: locale.name
     property string city: ""
     property string apikey: ""  //free registration on openweathermap.org
 
