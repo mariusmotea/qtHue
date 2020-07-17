@@ -13,12 +13,14 @@ Item {
         id: background
         width: parent.width
         height: text_nume.height + slider_bri.height + 10
-        //color: "white"
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.topMargin: 5
         anchors.leftMargin: 5
         radius: 5
+        color: "#EFEFEF"
+        border.width: 2
+        border.color: Qt.darker("white", 1.3)
 
         state: "CLOSED"
         states: [
@@ -38,17 +40,16 @@ Item {
                 easing.type: Easing.OutQuint
             }
         }
-
-        gradient: Gradient {
-            GradientStop {
-                position: 0.0
-                color: "#fcfcfc"
-            }
-            GradientStop {
-                position: 1.0
-                color: "#c6c6c6"
-            }
-        }
+//        gradient: Gradient {
+//            GradientStop {
+//                position: 0.0
+//                color: "#fcfcfc"
+//            }
+//            GradientStop {
+//                position: 1.0
+//                color: "#c6c6c6"
+//            }
+//        }
         Image {
             id: bulb
             anchors.top: parent.top
@@ -254,7 +255,7 @@ Item {
                 }
             }
         }
-        LinearGradient {
+        Slider {
             id: color_temp
             anchors.top: xy_selection.bottom
             anchors.topMargin: -3
@@ -270,16 +271,20 @@ Item {
                 } else
                     0
             }
-            start: Qt.point(0, 0)
-            end: Qt.point(parent.width, 0)
-            gradient: Gradient {
-                GradientStop {
-                    position: 0
-                    color: "#ffecaa"
-                }
-                GradientStop {
-                    position: 1
-                    color: "#a5ceee"
+            handle: Item{}
+            background: LinearGradient {
+                anchors.fill: parent
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0
+                        color: "#ffecaa"
+                    }
+                    GradientStop {
+                        position: 1
+                        color: "#a5ceee"
+                    }
                 }
             }
             LinearGradient {
@@ -290,14 +295,13 @@ Item {
                     GradientStop { position: 0.3; color: Qt.rgba(1, 1, 1, 0) }
                 }
             }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    var ct = 153 + ((width - mouseX) * 347 / width);
-                    pyconn('PUT', '/lights/' + lightId + '/state', {"ct": parseInt(ct)}, Functions.noCallback);
-                    bulb_color.color = parseInt(Functions.colorTemperatureToRGB(ct));
-
-                }
+            from: 500
+            to: 150
+            live: false
+            onValueChanged: {
+                var ct = Math.floor(color_temp.value)
+                pyconn('PUT', '/lights/' + lightId + '/state', {"ct": parseInt(ct)}, Functions.noCallback);
+                bulb_color.color = parseInt(Functions.colorTemperatureToRGB(ct));
             }
         }
         MouseArea {

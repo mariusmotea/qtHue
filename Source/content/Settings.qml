@@ -7,21 +7,6 @@ import "functions.js" as Functions
 Item {
     objectName: "Settings"
 
-    property real progress: 0
-    SequentialAnimation on progress {
-        loops: Animation.Infinite
-        running: true
-        NumberAnimation {
-            from: 0
-            to: 1
-            duration: 3000
-        }
-        NumberAnimation {
-            from: 1
-            to: 0
-            duration: 3000
-        }
-    }
     Row{
         id: header
         anchors.top: parent.top
@@ -66,6 +51,7 @@ Item {
             text: timeAddition
             color: colorCode
             placeholderText: "time addition for hourly weather forecast"
+            font.pixelSize: 12*parent.height*0.03
             background: Rectangle{
                 color: "#161619"
                 width: parent.width
