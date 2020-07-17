@@ -1,6 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.0
-import QtGraphicalEffects 1.8
+import QtGraphicalEffects 1.0
 import "styles"
 import "functions.js" as Functions
 
