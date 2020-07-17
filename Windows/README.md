@@ -4,5 +4,6 @@ Example structure:
 - plugins (folder)
 - Qt5...dll
 - Qt5...dll
+
 ...
 - qtHue.exe
