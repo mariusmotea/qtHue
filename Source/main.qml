@@ -253,8 +253,8 @@ ApplicationWindow {
                             pixelSize: 36
                         }
                         color: "white"
+                        width: temp_display.width - weather_icon.width
                         anchors.right: parent.right
-                        anchors.left: parent.left
                         anchors.rightMargin: 8 + weather_icon.width
                         anchors.top: parent.top
                         anchors.topMargin: 7
