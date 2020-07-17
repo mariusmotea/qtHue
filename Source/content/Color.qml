@@ -1,7 +1,7 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
+import QtQuick 2.8
+import QtQuick.Controls 2.8
 import QtGraphicalEffects 1.0
-import "../content/functions.js" as Functions
+import "functions.js" as Functions
 
 Drawer {
     property string selected_id
@@ -71,7 +71,7 @@ Drawer {
                 height: parent.height - 5
                 anchors.verticalCenter: parent.verticalCenter
                 radius: 4
-                color: "#254757"
+                color: Qt.hsva(colorCode.hsvHue + 0.005, colorCode.hsvSaturation - 0.25, colorCode.hsvValue - 0.55, 1)
                 states: [
                     State {
                         name: "SCENES"
@@ -130,8 +130,8 @@ Drawer {
         anchors.bottom: parent.bottom
         anchors.rightMargin: -3
         width: 4
-        color: "#33B5E5"
-        border.color: "#237B9C"
+        color: colorCode
+        border.color: Qt.darker(colorCode,1.4)
         border.width: 1
     }
 }

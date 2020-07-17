@@ -1,14 +1,13 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
+import QtQuick 2.8
+import QtQuick.Controls 2.8
 import QtGraphicalEffects 1.0
-import "functions.js" as Functions
-
-
+import "../functions.js" as Functions
 
 Item {
     id: lightStyle
     width: parent.width - 8
     height: background.height + 10
+    property color color_code: Qt.hsva(colorCode.hsvHue, colorCode.hsvSaturation - 0.1, colorCode.hsvValue - 0.15, 1)
 
     Rectangle {
         id: background
@@ -56,13 +55,13 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.topMargin: 7
-            source: "/content/images/bulb.png"
+            source: "../images/bulb.png"
 
             Image {
                 id: bulb_mask
                 anchors.top: parent.top
                 anchors.left: parent.left
-                source: "/content/images/bulb_head.png"
+                source: "../images/bulb_head.png"
                 visible: false
 
             }
@@ -104,33 +103,25 @@ Item {
             wrapMode: Text.Wrap
         }
 
-        Text {
+        Button {
             id: power_switch
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.top: parent.top
             anchors.topMargin: 10
-            font.pointSize: 30
-            font.family: "FontAwesome"
-            color: state === "ON" ? "#468bb7" : "#cccccc"
-            text: "\uf011"
             state: on ? "ON":"OFF"
-
-            MouseArea {
-                id: menumouse
+            background: Text{
                 anchors.fill: parent
-                anchors.margins: -10
-                onClicked: {
-                    if ( power_switch.state === "ON") {
-                        power_switch.state = "OFF";
-                    } else {
-                        power_switch.state = "ON";
-                    }
-                    pyconn('PUT', '/lights/' + lightId + '/state', {
-                               "on": !on
-                           }, Functions.noCallback);
-                    on = !on;
-                }
+                font.pointSize: 30
+                font.family: "FontAwesome"
+                color: parent.state === "ON" ? color_code : "#cccccc"
+                text: "\uf011"
+            }
+            onClicked: {
+                if ( power_switch.state === "ON") power_switch.state = "OFF";
+                else power_switch.state = "ON";
+                pyconn('PUT', '/lights/' + lightId + '/state', {"on": !on}, Functions.noCallback);
+                on = !on;
             }
         }
         Slider {
@@ -147,7 +138,7 @@ Item {
                 implicitWidth: 30
                 implicitHeight: 30
                 radius: height
-                color: Qt.lighter(power_switch.checked ? "#468bb7" : "#444", 1.2)
+                color: Qt.lighter(power_switch.state === "ON" ? color_code : "#444", 1.2)
                 border.color: "#bdbebf"
                 antialiasing: true
             }
@@ -164,19 +155,17 @@ Item {
                 Rectangle {
                     width: slider_bri.visualPosition * parent.width
                     height: parent.height
-                    color: power_switch.checked ? "#468bb7" : "#444"
+                    color: power_switch.state === "ON" ? color_code : "#444"
                     radius: 2
                 }
             }
             value: bri
             to: 255
             from: 1
-            enabled: power_switch.state === "ON"? true : false
+            enabled: power_switch.state === "ON" ? true : false
             onValueChanged: {
                 if (value !== bri) {
-                    pyconn('PUT', '/lights/' + lightId + '/state', {
-                               "bri": parseInt(value, 10)
-                           }, Functions.noCallback)
+                    pyconn('PUT', '/lights/' + lightId + '/state', {"bri": parseInt(value, 10)}, Functions.noCallback)
                 }
             }
         }

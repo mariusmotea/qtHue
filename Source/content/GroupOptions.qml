@@ -1,5 +1,5 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
+import QtQuick 2.8
+import QtQuick.Controls 2.8
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
@@ -180,10 +180,10 @@ Item {
         anchors.bottom: color_picker.top
         anchors.right: parent.right
         anchors.left: parent.left
-        color: "#33B5E5"
-        border.color: "#237B9C"
-        border.width: 1
+        color: colorCode
         height: "xy" in config["groups"][selected_id]["action"] && "ct" in config["groups"][selected_id]["action"] ? 3 : 0
+        border.color: Qt.darker(colorCode,1.2)
+        border.width: 1
     }
 
     Rectangle {
@@ -193,8 +193,8 @@ Item {
         anchors.rightMargin: -1
         width: 3
         height: color_picker.height
-        color: "#33B5E5"
-        border.color: "#237B9C"
+        color: colorCode
+        border.color: Qt.darker(colorCode,1.2)
         border.width: 1
     }
 }

@@ -1,19 +1,18 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
+import QtQuick 2.8
+import QtQuick.Controls 2.8
 import QtGraphicalEffects 1.0
-import "functions.js" as Functions
-
-
+import "../functions.js" as Functions
 
 Item {
     id: groupsDelegate
     width: gridViewProduse.cellWidth
     height: gridViewProduse.cellHeight
+    property color color_code: Qt.hsva(colorCode.hsvHue, colorCode.hsvSaturation - 0.1, colorCode.hsvValue - 0.15, 1)
 
     Rectangle {
         width: 450
         height: 85
-        //color: "white"
+        color: "white"
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.topMargin: 5
@@ -35,7 +34,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.topMargin: 7
-            source: "/content/images/bulb.png"
+            source: "../images/bulb.png"
             Canvas {
                 id: bulb_light
                 anchors.left: parent.left
@@ -83,7 +82,7 @@ Item {
                 id: bulb_mask
                 anchors.top: parent.top
                 anchors.left: parent.left
-                source: "/content/images/bulb_head.png"
+                source: "../images/bulb_head.png"
                 visible: false
 
             }
@@ -137,8 +136,8 @@ Item {
                 x: switch_state.leftPadding
                 y: parent.height / 2 - height / 2
                 radius: 5
-                color: switch_state.checked ? "#468bb7" : "#222"
-                border.color: switch_state.checked ? "#468bb7" : "#cccccc"
+                color: switch_state.checked ? color_code : "#222"
+                border.color: switch_state.checked ? color_code : "#cccccc"
                 Text {
                     font.pixelSize: 18
                     color: "white"
@@ -165,7 +164,7 @@ Item {
                     height: 55
                     radius: 5
                     color: switch_state.down ? "#cccccc" : "#ffffff"
-                    border.color: switch_state.checked ? (switch_state.down ? "#468bb7" : "#248DB7") : "#999999"
+                    border.color: switch_state.checked ? (switch_state.down ? color_code : Qt.hsva(colorCode.hsvHue, colorCode.hsvSaturation, colorCode.hsvValue - 0.2, 1)) : "#999999"
                 }
             }
 
@@ -192,7 +191,7 @@ Item {
                 implicitWidth: 30
                 implicitHeight: 30
                 radius: height
-                color: Qt.lighter(switch_state.checked ? "#468bb7" : "#444", 1.2)
+                color: Qt.lighter(switch_state.checked ? Qt.darker(color_code,1.02) : "#444", 1.2)
                 border.color: "#bdbebf"
                 antialiasing: true
             }
@@ -209,7 +208,7 @@ Item {
                 Rectangle {
                     width: slider_bri.visualPosition * parent.width
                     height: parent.height
-                    color: switch_state.checked ? "#468bb7" : "#444"
+                    color: switch_state.checked ? color_code : "#444"
                     radius: 2
                 }
             }
@@ -217,14 +216,7 @@ Item {
             from: 1
             to: 255
             enabled: switch_state.checked
-//            updateValueWhileDragging: false
-            onValueChanged: {
-                if (value !== bri) {
-                    pyconn('PUT', '/groups/' + groupId + '/action', {
-                                         bri: parseInt(value, 10)
-                                     }, Functions.noCallback)
-                }
-            }
+            onValueChanged: if (value !== bri) pyconn('PUT', '/groups/' + groupId + '/action', {bri: parseInt(value, 10)}, Functions.noCallback)
         }
     }
 }
