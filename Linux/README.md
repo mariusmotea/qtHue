@@ -1,4 +1,7 @@
 ## Ubuntu dependecies installation
 
-`sudo apt install libqt5core5a libqt5gui5 libqt5qml5 qtdeclarative5-localstorage-plugin qml-module-qtquick-controls`
+`sudo apt install libqt5gui5 libqt5qml5 qml-module-qtquick2 qml-module-qtquick-localstorage qml-module-qtquick-controls2 qml-module-qtquick-window2 qml-module-qtgraphicaleffects`
+
+make sure you use full-kms drivers for a better performance
+if the program not opening, try to start it from terminal
 
