@@ -250,9 +250,10 @@ Item {
     }
     Popup{
         id: popup_help
-        anchors.centerIn: parent
-        width: parent.width*0.7
-        height: parent.height*0.7
+        topMargin: mainWindow.height/2 - popup_help.height/2 + header.height/2
+        leftMargin: mainWindow.width/2 - popup_help.width/2
+        width: parent.width*0.8
+        height: parent.height*0.8
         contentItem: Text{
             anchors.fill: parent
             padding: 10
@@ -262,16 +263,19 @@ Item {
             fontSizeMode: Text.Fit
             font.pixelSize: 200
             onLinkActivated: Qt.openUrlExternally(link)
-            text: "<p><strong><span>Bridge IP</span></strong></p>
-           <p><span>Type in your bridge ip e.g. 192.168.178.x</span></p>
-           <p><span><strong>Apikey</strong></span></p>
-           <p><span>Type in your apikey found&nbsp;</span><a href=\"https://home.openweathermap.org/api_keys\"><span>here</span></a></p><span>If you get an email about to many request, ignore it</span></p>
-           <p><span><strong>City</strong></span></p>
-           <p><span>Type in your city name or city id</span><br><span>Your city id can be found in the adressbar on your open weather city page</span></p>
-           <p><span><strong>Unit</strong></span></p>
-           <p><span>Change your time format from 24h to 12h or switch between Celsius and Fahrenheit</span></p>
-           <p><span><strong>Time addition</strong></span></p>
-           <p><span>It will be added behind the hour in the weather page (e.g. in german &quot;Uhr&quot; for better understanding)</span></p>"
+            text: "<p><strong>Bridge IP</strong></p>
+<p>Type in your bridge ip e.g. 192.168.178.x</p>
+<p><strong>Apikey</strong></p>
+<p>Type in your apikey found&nbsp;<a href=\"%5C%22https%3A//home.openweathermap.org/api_keys%5C%22\">here</a></p>
+<p>If you get an email about to many request, ignore it</p>
+<p><strong>City</strong></p>
+<p>Type in your city name or city id<br>Your city id can be found in the adressbar on your open weather city page</p>
+<p><strong>Unit</strong></p>
+<p>Change your time format from 24h to 12h or switch between Celsius and Fahrenheit</p>
+<p><strong>Time addition</strong></p>
+<p>It will be added behind the hour in the weather page (e.g. in german &quot;Uhr&quot; for better understanding)</p>
+<p><strong>Raspberry</strong></p>
+<p>If you&#39;re using a raspberry 0-3, make sure you use full kms GL driver for better performance</p>"
         }
         background: Rectangle{
             anchors.fill: parent
