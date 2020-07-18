@@ -10,10 +10,12 @@ Working:
  - lights on/off, brightness, color temperature, colors(xy) 
  - turn on/off all the lights
  - scenes
- - show [weather](https://openweathermap.org/api)
+ - show [weather](https://openweathermap.org/api) in header and on own weather page
+ - customize UI color
+ - select time format and tempature unit
  
  ToDo:
-   - ~~provide precompiled binaries for RaspberryPi, Windows, Linux and MacOS.~~
+   - provide precompiled binaries MacOS (it would be nice if anyone can do that)
 
 Build and tested with my project [diyHue](https://github.com/mariusmotea/diyHue), but must work will oficial bridge and other emulator that work with hue api protocol.
 
