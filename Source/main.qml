@@ -1,5 +1,5 @@
-import QtQuick 2.8
-import QtQuick.Controls 2.8
+import QtQuick 2.6
+import QtQuick.Controls 2.0
 import QtQuick.LocalStorage 2.0
 import "./content"
 import "content/functions.js" as Functions
@@ -8,8 +8,8 @@ ApplicationWindow {
     id: mainWindow
     visible: true
     title: qsTr("qtHue")
-    width: 1360
-    height: 768
+    width: 1360/1.4
+    height: 768/1.4
     background: Rectangle {
         id: background
         color: "#212126"
@@ -106,7 +106,6 @@ ApplicationWindow {
                         username = rs.rows.item(0).username
                         city = rs.rows.item(0).city
                         apikey = rs.rows.item(0).apikey
-                        bridgeConnected = true;
                         pyconn('GET', '', {}, Functions.updateLightsStatus)
                     }
                     if(rs2.rows.length === 0) tx.executeSql('INSERT INTO settings VALUES(?, ?, ?, ?)',["", "°C", "#33b5e5", ''])
@@ -253,8 +252,8 @@ ApplicationWindow {
                             pixelSize: 36
                         }
                         color: "white"
+                        width: temp_display.width - weather_icon.width
                         anchors.right: parent.right
-                        anchors.left: parent.left
                         anchors.rightMargin: 8 + weather_icon.width
                         anchors.top: parent.top
                         anchors.topMargin: 7

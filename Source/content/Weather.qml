@@ -1,4 +1,4 @@
-import QtQuick 2.8
+import QtQuick 2.6
 import "styles"
 import "font/weatherIcons.js" as Wi
 
@@ -6,6 +6,8 @@ Item {
     id: weather
     objectName: "Weather"
     property var response: weatherResponseOnecall
+    property bool swipeTip: !bridgeConnected
+
     Rectangle{
         anchors.fill: image_weather
         radius: 10
@@ -68,7 +70,7 @@ Item {
         spacing: 10
         Rectangle{          //tempature
             color: "#1A1A1E"
-            width: parent.width/2
+            width: parent.width/2 - 5
             height: parent.height
             radius: 10
             visible: text_temp.text == "" ? false : true
@@ -87,7 +89,7 @@ Item {
         }
         Rectangle{         //sunrise and sunset
             color: "#1A1A1E"
-            width: parent.width/2
+            width: parent.width/2 - 5
             height: parent.height
             radius: 10
             visible: text_sun.text == "" ? false : true
@@ -119,7 +121,7 @@ Item {
         spacing: 10
         Rectangle{       //humidity
             color: "#1A1A1E"
-            width: parent.width/2
+            width: parent.width/2 - 5
             height: parent.height
             radius: 10
             visible: text_humidity.text == "" ? false : true
@@ -138,7 +140,7 @@ Item {
         }
         Rectangle{       //wind 
             color: "#1A1A1E"
-            width: parent.width/2
+            width: parent.width/2 - 5
             height: parent.height
             radius: 10
             visible: text_wind.text == "" ? false : true
@@ -165,11 +167,13 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 10
+        spacing: 5
         Flickable{
+            id: hourly_flickable
             height: parent.height
             width: (parent.width/9)*5
-            contentWidth: (parent.width/9) * 12
+            contentWidth: (parent.width/9) * 12 + 5
+            onMovingChanged: swipeTip = false
             clip: true
             Row{
                 height: parent.height
@@ -238,10 +242,12 @@ Item {
             }
         }
         Flickable{
+            id: daily_flickable
             height: parent.height
             width: (parent.width/9)*4
-            contentWidth: (parent.width/9) * 7
+            contentWidth: (parent.width/9) * 7 + 5
             clip: true
+            onMovingChanged: swipeTip = false
             Row{
                 height: parent.height
                 width: parent.width
@@ -282,6 +288,58 @@ Item {
                     timeId: 7
                 }
             }
+        }
+    }
+    Rectangle{          //tempature
+        color: "#1A1A1E"
+        height: hourly_flickable.height/2
+        width: hourly_flickable.width/2
+        anchors.left: parent.left
+        anchors.leftMargin: hourly_flickable.width/2 - this.width/2
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: hourly_flickable.height/2 - this.height/2
+        radius: 10
+        visible: response != "" ? swipeTip : false
+        border.color: colorCode
+        border.width: 2
+        Text{
+            id: swipeTip1
+            width: parent.width
+            height: parent.height
+            padding: 20
+            color: "white"
+            font.pixelSize: 400
+            fontSizeMode: Text.Fit
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            visible: swipeTip
+            text: "Swipe me! ->"
+        }
+    }
+    Rectangle{          //tempature
+        color: "#1A1A1E"
+        height: daily_flickable.height/2
+        width: daily_flickable.width/2
+        anchors.right: parent.right
+        anchors.rightMargin: daily_flickable.width/2 - this.width/2
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: daily_flickable.height/2 - this.height/2
+        radius: 10
+        visible: response != "" ? swipeTip : false
+        border.color: colorCode
+        border.width: 2
+        Text{
+            id: swipeTip2
+            width: parent.width
+            height: parent.height
+            padding: 20
+            color: "white"
+            font.pixelSize: 400
+            fontSizeMode: Text.Fit
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            visible: swipeTip
+            text: "Swipe me! ->"
         }
     }
 }
