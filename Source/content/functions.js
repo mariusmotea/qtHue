@@ -6,7 +6,7 @@ function getWeather() {
 
         if(tempUnit == "°C") unit = "metric"
         else if(tempUnit == "°F") unit = "imperial"
-        if(city.replace(/^[0-9]+$/, '') == "")  cityRequest = "id=" + city
+        if(city.match(/^[0-9]+$/))  cityRequest = "id=" + city
         else cityRequest = "q=" + city
 
         xhr.open('GET', 'http://api.openweathermap.org/data/2.5/weather?' + cityRequest + '&units=' + unit + '&APPID=' + apikey + '&lang=' + local.replace(/[\_].*$/, ''), true);
@@ -182,4 +182,12 @@ function rgb_to_cie(red, green, blue)
 
 
     return [parseFloat(x), parseFloat(y)];
+}
+
+function delay(delayTime, cb) {
+    timer = new Timer();
+    timer.interval = delayTime;
+    timer.repeat = false;
+    timer.triggered.connect(cb);
+    timer.start();
 }

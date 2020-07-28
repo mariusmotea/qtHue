@@ -1,27 +1,23 @@
-import QtQuick 2.8
+import QtQuick 2.6
 import "styles"
 import "functions.js" as Functions
 
 Item {
     id: home
     objectName: "Home"
+    property int columnCount: gridViewProduse.cellHeight*gridViewProduse.count < gridViewProduse.height ? 1 : gridViewProduse.cellHeight*gridViewProduse.count < gridViewProduse.height*2 ? 2 : 3
+        GridView {
+            id: gridViewProduse
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: mainWindow.width
+            model: groupsModel
+            delegate: GroupStyle {}
 
-    GridView {
-        id: gridViewProduse
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: parent.width
-        model: groupsModel
-        clip: true
-
-        delegate: GroupStyle {}
-
-//        cellWidth:  parent.width < 500*2 ? parent.width/2 : parent.width*(710/1360) > 500 ? 500 : parent.width*(710/1360)
-//        cellHeight: parent.height*(109/768) > 89 ? 89 : parent.height*(109/768) < 69 ? 69 : parent.height*(109/768)
-        cellWidth: 460
-        flow: GridView.FlowTopToBottom
-        interactive: false
-        cacheBuffer: 1024
-        focus: true
-    }
+            cellWidth: 365*columnCount > mainWindow.width ? 365 : mainWindow.width/columnCount > 500 ? 500 : mainWindow.width/columnCount
+            cellHeight: mainWindow.height*(109/768) > 95 ? 95 : mainWindow.height*(109/768) < 82 ? 82 : mainWindow.height*(109/768)
+            flow: GridView.FlowTopToBottom
+            cacheBuffer: 1024
+            focus: true
+        }
 }

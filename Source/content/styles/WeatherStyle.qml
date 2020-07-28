@@ -1,4 +1,4 @@
-import QtQuick 2.8
+import QtQuick 2.6
 import "../font/weatherIcons.js" as Wi
 
 Item{
@@ -44,7 +44,7 @@ Item{
         fontSizeMode: Text.Fit
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        text: response != "" ? Wi.unixToReadable(response[time][timeId]["dt"], time) : ""
+        text: response != "" ? Wi.unixToReadable(response[time][timeId]["dt"], time) + " " + addition : ""
     }
     Text{
         id: text_temp

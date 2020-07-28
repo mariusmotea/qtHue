@@ -1,5 +1,5 @@
-import QtQuick 2.8
-import QtQuick.Controls 2.8
+import QtQuick 2.6
+import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
 import "functions.js" as Functions
 
@@ -50,6 +50,7 @@ Item {
         }
     }
     Slider {
+        property bool activate: false
         id: color_temp
         height: "ct" in config["groups"][selected_id]["action"] ? color_picker.height : 0
         anchors.left: parent.left
@@ -75,16 +76,19 @@ Item {
         from: 150
         to: 500
         live: false
-        onMoved: {
-            var ct = Math.floor(color_temp.value)
-            console.warn(ct);
-            pyconn('PUT', '/groups/' + selected_id + '/action', {"ct": ct}, Functions.noCallback);
-            for (var light=0; light < config["groups"][selected_id]["lights"].length; light++) {
-                if ("ct" in config["lights"][config["groups"][selected_id]["lights"][light]]["state"]) {
-                    config["lights"][config["groups"][selected_id]["lights"][light]]["state"]["ct"] = ct;
+        Component.onCompleted: {activate = true}
+        onValueChanged: {
+            if(activate){
+                var ct = Math.floor(color_temp.value)
+                console.log(ct)
+                pyconn('PUT', '/groups/' + selected_id + '/action', {"ct": ct}, Functions.noCallback);
+                for (var light=0; light < config["groups"][selected_id]["lights"].length; light++) {
+                    if ("ct" in config["lights"][config["groups"][selected_id]["lights"][light]]["state"]) {
+                        config["lights"][config["groups"][selected_id]["lights"][light]]["state"]["ct"] = ct;
+                    }
                 }
+                groupsModel.set(light_options.selected_id,{"ct":ct});
             }
-            groupsModel.set(light_options.selected_id,{"ct":ct});
         }
     }
 

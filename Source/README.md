@@ -7,12 +7,13 @@ How to build
 sudo apt install \
   qtcreator \
   qtdeclarative5-dev \
-  libqt5core5a \
   libqt5gui5 \
   libqt5qml5 \
-  qtdeclarative5-localstorage-plugin \
-  qml-module-qtquick-controls 
+  qml-module-qtquick2 \
+  qml-module-qtquick-localstorage \
+  qml-module-qtquick-controls2 \
+  qml-module-qtquick-window2 \
+  qml-module-qtgraphicaleffects
 ```
-
 - Then open the `qtHue.pro` file in Qt Creator.
 - Finally click the green play button that should be available on the bottom left corner of Qt Creator
